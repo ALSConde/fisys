@@ -1,12 +1,13 @@
 import os
 from functools import lru_cache
-from pydantic import BaseSettings
+from pydantic_settings import BaseSettings
 
 
 @lru_cache
 def get_settings():
-    runtime_env = os.getenv("DEV", "ENV")
-    return f"env.{runtime_env}" if runtime_env == "DEV" else f"env.prod"
+    runtime_env = os.getenv("ENV")
+    # return f".env.{runtime_env}" if runtime_env else ".env"
+    return ".env"
 
 class Settings(BaseSettings):
     API_VERSION: str
@@ -21,7 +22,7 @@ class Settings(BaseSettings):
 
     JWT_SECRET_KEY: str
     JWT_ALGORITHM: str
-    JWT_EXPIRATION_TIME_MINUTES: int
+    JWT_EXPIRATION_TIME: int
 
     class Config:
         env_file = get_settings()

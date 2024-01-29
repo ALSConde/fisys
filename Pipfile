@@ -5,11 +5,23 @@ name = "pypi"
 
 [packages]
 fastapi = "*"
-uvicorn = "*"
+uvicorn = {extras = ["standard"], version = "*"}
 sqlalchemy = "*"
+pyjwt = "*"
+pydantic-settings = "*"
+mysqlclient = "*"
+sqlalchemy-utils = "*"
+python-jose = {extras = ["cryptography"], version = "*"}
+passlib = {extras = ["bcrypt"], version = "*"}
+googlefinance = "*"
+pydantic = {extras = ["email"], version = "*"}
+python-multipart = "*"
 
 [dev-packages]
 
 [requires]
 python_version = "3.10"
 python_full_version = "3.10.11"
+
+[scripts]
+start = "uvicorn main:app --reload"
