@@ -12,7 +12,7 @@ AuthRouter = APIRouter(prefix="/auth", tags=["v1", "auth"])
 @AuthRouter.post("/token")
 async def login(
     form: OAuth2PasswordRequestForm = Depends(), loginService: LoginService = Depends()
-)-> Token:
+) -> Token:
     try:
         return await loginService.execute(
             LoginDTO(email=form.username, password=form.password)

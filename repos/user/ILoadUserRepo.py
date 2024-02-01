@@ -4,5 +4,4 @@ from models import User
 
 class ILoadUserRepo(ABC):
     @abstractmethod
-    def load(self, user: str) -> User | None:
-        ...
+    async def load_by(self, **kwargs) -> User | None: ...

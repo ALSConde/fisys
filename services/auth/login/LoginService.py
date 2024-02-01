@@ -1,4 +1,4 @@
-from fastapi import Depends
+from fastapi import Depends, HTTPException
 from infra.sqlalchemy.user.AlchemyUserRepo import AlchemyUserRepo
 from models.User import User
 from repos.user import IUserRepo
@@ -15,7 +15,7 @@ class LoginService(IService[LoginDTO, Token]):
         self.user_repo = user_repo
 
     async def execute(self, dto: LoginDTO) -> Token:
-        user = self.user_repo.load(dto.email)
+        user = await self.user_repo.load_by(email=dto.email)
         if user is None:
             raise Exception("User not found")
         if not user.check_password(dto.password):
