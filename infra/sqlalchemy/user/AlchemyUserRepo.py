@@ -1,3 +1,4 @@
+from typing import Sequence
 from infra.sqlalchemy.AlchemyRepo import AlchemyRepo
 from models import User
 from repos.user import IUserRepo
@@ -12,6 +13,9 @@ class AlchemyUserRepo(IUserRepo, AlchemyRepo[User]):
     
     async def load_by(self, **kwargs) -> User:
         return await super().load_by(**kwargs)
+    
+    async def load_all(self, **kwargs) -> list[User] | None:
+        return await super().load_all(**kwargs)
     
     async def update(self, user_id : int, user: User) -> User:
         return await super().update(user_id, user)
