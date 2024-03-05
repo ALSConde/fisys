@@ -2,6 +2,6 @@ from abc import ABC, abstractmethod
 from models import User
 
 
-class ICreateUserRepo(ABC):
+class IDeleteUserRepo(ABC):
     @abstractmethod
-    async def create(self, user: User) -> User: ...
+    async def delete(self, user: User) -> None: ...
