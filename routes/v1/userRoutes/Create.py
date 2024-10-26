@@ -3,7 +3,6 @@ from schemas.pydantic.APIResponse import ApiResponse
 from schemas.pydantic.user import UserPost
 from schemas.pydantic.user import User
 from services.user.CreateService import CreateService
-
 CreateRouter = APIRouter(prefix="/user", tags=["v1", "user"])
 
 

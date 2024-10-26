@@ -13,11 +13,11 @@ class AlchemyUserRepo(AlchemyRepo[User], IUserRepo):
     async def create(self, user: User) -> User:
         return await super().create(user)
 
-    async def load_by(self, **kwargs) -> User:
+    async def load_by(self, **kwargs) -> list[User]:
         return await super().load_by(**kwargs)
 
-    async def load_all(self, **kwargs) -> list[User] | None:
-        return await super().load_all(**kwargs)
+    async def load_first(self, **kwargs) -> list[User] | None:
+        return await super().load_first(**kwargs)
 
     async def update(self, user_id: int, user: User) -> User:
         return await super().update(user_id, user)

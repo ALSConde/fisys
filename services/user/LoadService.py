@@ -3,8 +3,9 @@ from fastapi import Depends
 from pydantic import EmailStr
 from infra.sqlalchemy.user.AlchemyUserRepo import AlchemyUserRepo
 from repos.user.IUserRepo import IUserRepo
-from schemas.pydantic.user import User, UserPost
+from schemas.pydantic.user import UserPost
 from services.contracts.Service import IService
+from models.User import User
 
 
 class LoadService(IService[Annotated[UserPost, Optional[UserPost]], User]):
@@ -14,14 +15,13 @@ class LoadService(IService[Annotated[UserPost, Optional[UserPost]], User]):
         self.user_repo = user_repo
 
     async def execute(self, dto: str | EmailStr, **kwargs) -> User:
-
-        if kwargs.fromkeys("all"):
-            data = await self.user_repo.load_all(email=dto)
-        else:
+        if kwargs["all"]:
             data = await self.user_repo.load_by(email=dto)
+        else:
+            data = await self.user_repo.load_first(email=dto)
 
         return data
 
     async def load_all_by_email(self, email: str | EmailStr) -> list[User] | None:
-        data = await self.user_repo.load_all(email=email)
+        data = await self.user_repo.load_by(email=email)
         return data

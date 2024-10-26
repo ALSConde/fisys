@@ -14,10 +14,10 @@ class CreateService(IService[UserPost, User]):
 
     async def execute(self, dto: UserPost) -> PydanticUser | None:
         user = await self.user_repo.load_by(email=dto.email)
+        print(f"dto: {dto}")
         if user is None:
-
             data = await self.user_repo.create(
-                User(name=dto.name, email=dto.email, password=dto.password)
+                User(name=dto.name, email=dto.email, password=dto.password.get_secret_value())
             )
 
             return data
