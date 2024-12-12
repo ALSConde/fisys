@@ -12,11 +12,14 @@ class SecretService(IService[LoginDTO, SecretResolve]):
         pass
 
     async def execute(self, dto, **kwargs):
-        password = dto.password if hasattr(dto, "password") else dto
-        if "hash_password" in kwargs and type(password) is str:
-            return await self.hash_password(password)
-        elif "verify_password" in kwargs:
-            return self.verify_password(dto.password, kwargs["hashed_password"])
+        if "hash_password" in kwargs:
+            return await self.hash_password(dto.password)
+        elif (
+            "verify_password" in kwargs
+            and "hashed_password" in kwargs
+            and type(dto) == str
+        ):
+            return self.verify_password(dto, kwargs["hashed_password"])
         else:
             return None
 
