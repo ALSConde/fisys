@@ -8,7 +8,7 @@ from services.auth.login import LoginService
 AuthRouter = APIRouter(prefix="/auth", tags=["v1", "auth"])
 
 
-@AuthRouter.post("/token")
+@AuthRouter.post("/login")
 async def login(
     form: OAuth2PasswordRequestForm = Depends(), loginService: LoginService = Depends()
 ) -> Token:

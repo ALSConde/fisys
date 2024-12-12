@@ -8,5 +8,4 @@ Response = TypeVar("Response", bound=BaseModel)
 
 class IService(Generic[Request, Response], ABC):
     @abstractmethod
-    def execute(self, dto: Request) -> Response:
-        ...
+    def execute(self, dto: Request, **kwargs) -> Response: ...
