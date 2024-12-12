@@ -13,15 +13,19 @@ mysqlclient = "*"
 sqlalchemy-utils = "*"
 python-jose = {extras = ["cryptography"], version = "*"}
 passlib = {extras = ["bcrypt"], version = "*"}
-googlefinance = "*"
 pydantic = {extras = ["email"], version = "*"}
 python-multipart = "*"
+sqlalchemy-stubs = "*"
+yfinance = "*"
 
 [dev-packages]
+pytest = "*"
+httpx = "*"
+pytest-cov = "*"
 
 [requires]
-python_version = "3.10"
-python_full_version = "3.10.11"
+python_version = "3.11"
+python_full_version = "3.11.8"
 
 [scripts]
 start = "uvicorn main:app --reload"

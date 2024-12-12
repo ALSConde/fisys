@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from exceptions.login.LoginExceptions import InvalidCredentials
-from schemas.pydantic.APIResponse import ApiResponse
 from schemas.pydantic.auth import Token
 from schemas.pydantic.auth.login.LoginDTO import LoginDTO
 from services.auth.login import LoginService
@@ -9,7 +8,7 @@ from services.auth.login import LoginService
 AuthRouter = APIRouter(prefix="/auth", tags=["v1", "auth"])
 
 
-@AuthRouter.post("/token")
+@AuthRouter.post("/login")
 async def login(
     form: OAuth2PasswordRequestForm = Depends(), loginService: LoginService = Depends()
 ) -> Token:
