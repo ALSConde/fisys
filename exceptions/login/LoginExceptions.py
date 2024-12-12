@@ -1,6 +1,6 @@
-from .ILoginException import ILoginException
+from exceptions.APIError import APIError
 
 
-class InvalidCredentials(ILoginException):
+class InvalidCredentials(APIError):
     def __init__(self) -> None:
-        super().__init__("Invalid credentials")
+        super().__init__(401, "Invalid credentials")

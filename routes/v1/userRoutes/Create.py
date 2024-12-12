@@ -1,19 +1,26 @@
-from fastapi import APIRouter, Depends, HTTPException
-from schemas.pydantic.APIResponse import ApiResponse
+from fastapi import APIRouter, Depends, Response, status
+from fastapi.logger import logger
+from fastapi.responses import JSONResponse
+from exceptions.APIError import APIError
+from exceptions.user.UserAlreadyExists import UserAlreadyExists
 from schemas.pydantic.user import UserPost
-from schemas.pydantic.user import User
 from services.user.CreateService import CreateService
+
 CreateRouter = APIRouter(prefix="/user", tags=["v1", "user"])
 
 
-@CreateRouter.post("/create/", response_model=ApiResponse[User])
+@CreateRouter.post("/create/", status_code=status.HTTP_201_CREATED)
 async def create(
-    userData: UserPost, createService: CreateService = Depends(CreateService)
-) -> ApiResponse[User]:
+    userData: UserPost,
+    createService: CreateService = Depends(CreateService),
+) -> Response:
     try:
-        data = await createService.execute(userData)
-        if data is None:
-            return ApiResponse(message="User already exists", status_code=400)
-        return ApiResponse(message="User created successfully", status_code=200)
-    except Exception as e:
-        raise HTTPException(500, str(e))
+        await createService.execute(userData)
+
+        return JSONResponse(
+            content={"detail": "User created successfully"},
+            status_code=status.HTTP_201_CREATED,
+        )
+    except APIError as e:
+        logger.error(e.message)
+        raise e

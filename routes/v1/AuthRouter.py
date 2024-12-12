@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from exceptions.login.LoginExceptions import InvalidCredentials
-from schemas.pydantic.APIResponse import ApiResponse
 from schemas.pydantic.auth import Token
 from schemas.pydantic.auth.login.LoginDTO import LoginDTO
 from services.auth.login import LoginService
