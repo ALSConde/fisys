@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, Response
 
+from exceptions.user.UserNotFound import UserNotFound
 from services.user.DeleteService import DeleteService
 
 
@@ -15,6 +16,9 @@ async def delete(
         response.status_code = 204
         if not data:
             response.status_code = 404
+        return response
+    except UserNotFound as e:
+        response.status_code = 404
         return response
     except Exception as e:
         response.status_code = 500

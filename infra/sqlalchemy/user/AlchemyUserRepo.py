@@ -20,20 +20,36 @@ class AlchemyUserRepo(AlchemyRepo[User], IUserRepo):
     async def load_all(self) -> Sequence[User]:
         return await super().load_all()
 
-    async def load_all_actives(self) -> Sequence[User]:
-        return await super().load_all_actives()
-
-    async def load_actives_by(self, **kwargs) -> Optional[User]:
-        return await super().load_actives_by(**kwargs)
-
     async def load_first(self, **kwargs) -> list[User] | None:
         return await super().load_first(**kwargs)
 
-    async def load_active_first(self, **kwargs) -> User | None:
-        return await super().load_active_first(**kwargs)
+    async def load_actives_by(self, **kwargs) -> list[User] | User | None:
+        query = self.session.query(self.model)
+        for field, value in kwargs.items():
+            query = query.filter(
+                getattr(self.model, field).like(f"%{value}%")
+            ).filter_by(active=True)
+        return query.all()
 
-    async def load_all_inactives(self) -> list[User]:
-        return await super().load_all_inactives()
+    async def load_active_first(self, **kwargs) -> User | None:
+        query = self.session.query(self.model)
+        for field, value in kwargs.items():
+            query = query.filter(
+                getattr(self.model, field).like(f"%{value}%")
+            ).filter_by(active=True)
+        return query.first()
 
     async def update(self, user_id: int, user: User) -> User:
         return await super().update(user_id, user)
+
+    async def load_all_actives(self) -> list[User]:
+        return self.session.query(self.model).filter_by(active=True).all()
+
+    async def load_all_inactives(self) -> list[User]:
+        return self.session.query(self.model).filter_by(active=False).all()
+
+    async def delete(self, id: int) -> None:
+        model = self.session.query(self.model).filter_by(id=id, active=True)
+        model.update({"active": False})
+        self.session.commit()
+        self.session.flush()

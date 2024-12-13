@@ -1,6 +1,7 @@
 from typing import Optional
 
 from fastapi import Depends
+from exceptions.user.UserNotFound import UserNotFound
 from infra.sqlalchemy.user.AlchemyUserRepo import AlchemyUserRepo
 from models.User import User
 from repos.user.IUserRepo import IUserRepo
@@ -15,7 +16,9 @@ class DeleteService(IService[UserPost, User]):
         self.user_repo = user_repo
 
     async def execute(self, id) -> Optional[int]:
-        if id:
+        if await self.user_repo.load_active_first(id=id):
             await self.user_repo.delete(id)
             return id
+        else:
+            raise UserNotFound()
         
