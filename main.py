@@ -1,12 +1,12 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
-
 from fastapi.responses import JSONResponse
 from exceptions.APIError import APIError
 from models.BaseModel import init
 from configs.Environment import get_env
 from routes.v1 import V1Router
-
+from models.wallets.stocks.StockBuyHistory import StockBuyHistory
+from models.wallets.stocks.StockSellHistory import StockSellHistory
 
 # Get environment variables
 env = get_env()

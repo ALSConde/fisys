@@ -1,4 +1,3 @@
-from typing import Generic
 from .AbstractAlchemyRepo import AbstractAlchemyRepo, M
 
 

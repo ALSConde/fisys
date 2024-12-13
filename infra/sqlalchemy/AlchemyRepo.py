@@ -1,12 +1,18 @@
 from typing import Generic
 from fastapi import Depends
 from configs.Database import get_db
-from infra.sqlalchemy.AbstractAlchemyRepo import M
-from infra.sqlalchemy.AbstractLoadAlchemyRepo import AbstractLoadAlchemyRepo
-from infra.sqlalchemy.AbstractCreateAlchemyRepo import AbstractCreateAlchemyRepo
-from infra.sqlalchemy.AbstractUpdateAlchemyRepo import AbstractUpdateAlchemyRepo
-from infra.sqlalchemy.AbstractDeleteAlchemyRepo import AbstractDeleteAlchemyRepo
 from sqlalchemy.orm import Session
+from infra.sqlalchemy.abstract.AbstractAlchemyRepo import M
+from infra.sqlalchemy.abstract.AbstractCreateAlchemyRepo import (
+    AbstractCreateAlchemyRepo,
+)
+from infra.sqlalchemy.abstract.AbstractDeleteAlchemyRepo import (
+    AbstractDeleteAlchemyRepo,
+)
+from infra.sqlalchemy.abstract.AbstractLoadAlchemyRepo import AbstractLoadAlchemyRepo
+from infra.sqlalchemy.abstract.AbstractUpdateAlchemyRepo import (
+    AbstractUpdateAlchemyRepo,
+)
 
 
 class AlchemyRepo(
@@ -16,5 +22,5 @@ class AlchemyRepo(
     AbstractUpdateAlchemyRepo[M],
     AbstractDeleteAlchemyRepo[M],
 ):
-    def __init__(self, model: M,session: Session = Depends(get_db)) -> None:
-        super().__init__(model,session)
+    def __init__(self, model: M, session: Session = Depends(get_db)) -> None:
+        super().__init__(model, session)

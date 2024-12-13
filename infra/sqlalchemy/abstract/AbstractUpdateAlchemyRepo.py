@@ -1,5 +1,4 @@
-from typing import Generic
-from infra.sqlalchemy.AbstractAlchemyRepo import AbstractAlchemyRepo, M
+from .AbstractAlchemyRepo import M, AbstractAlchemyRepo
 
 
 class AbstractUpdateAlchemyRepo(AbstractAlchemyRepo[M]):
