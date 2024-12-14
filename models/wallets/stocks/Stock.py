@@ -13,7 +13,7 @@ class Stock(BaseModel):
     quantity = Column(Integer, nullable=False)
     mean_price = Column(Float, nullable=False)
     wallet_id = Column(Integer, ForeignKey("wallets.id"), nullable=False)
-    # category_id = Column(Integer, ForeignKey("categories.id"), nullable=False)
+    category_id = Column(Integer, ForeignKey("categories.id"), nullable=False)
 
     # Stock Relationships
     wallet = relationship("Wallet", back_populates="stocks")
@@ -23,4 +23,4 @@ class Stock(BaseModel):
     stock_sell_history = relationship(
         "StockSellHistory", back_populates="stock", cascade="all, delete-orphan"
     )
-    # category = relationship("Categories", back_populates="stocks")
+    category = relationship("Categories", back_populates="stocks")
