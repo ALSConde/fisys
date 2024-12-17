@@ -7,6 +7,11 @@ from configs.Environment import get_env
 from routes.v1 import V1Router
 from models.wallets.stocks.StockBuyHistory import StockBuyHistory
 from models.wallets.stocks.StockSellHistory import StockSellHistory
+from models.wallets.stocks.Stock import Stock
+from models.wallets.Income import Income
+from models.wallets.Expanse import Expanse
+from models.wallets.Wallet import Wallet
+from models.wallets.Categories import Categories
 
 # Get environment variables
 env = get_env()

@@ -1,18 +1,18 @@
-from pydantic import BaseModel, EmailStr, SecretStr
+from pydantic import BaseModel, ConfigDict, EmailStr, SecretStr
 
 
 class UserPost(BaseModel):
     name: str
     email: EmailStr
-    password: SecretStr 
+    password: SecretStr
 
-    class Config:
-        from_attributes = True
-
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "name": "testuser",
                 "email": "example.user@email.com",
                 "password": "examplepassword",
             }
-        }
+        },
+        from_attributes=True,
+    )
