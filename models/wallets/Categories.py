@@ -19,5 +19,5 @@ class Categories(BaseModel):
         "Income", back_populates="category", cascade="all, delete-orphan"
     )
     expenses = relationship(
-        "Expense", back_populates="category", cascade="all, delete-orphan"
+        "Expanse", back_populates="category", cascade="all, delete-orphan"
     )

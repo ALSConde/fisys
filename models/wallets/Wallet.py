@@ -17,5 +17,7 @@ class Wallet(BaseModel):
     stocks = relationship(
         "Stock", back_populates="wallet", cascade="all, delete-orphan"
     )
+    incomes = relationship("Income", back_populates="wallet")
+    expenses = relationship("Expanse", back_populates="wallet")
     stock_buy_history = relationship("StockBuyHistory", back_populates="wallet")
     stock_sell_history = relationship("StockSellHistory", back_populates="wallet")

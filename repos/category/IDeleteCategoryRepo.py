@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
 
-class IDeleteCateogryRepo(ABC):
+class IDeleteCategoryRepo(ABC):
     @abstractmethod
     def delete(self, category_id: int) -> None: ...
