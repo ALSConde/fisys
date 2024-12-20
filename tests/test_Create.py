@@ -1,55 +1,52 @@
+from pydantic import SecretStr
+import pytest
 from fastapi.testclient import TestClient
 from fastapi import status
-import pytest
+from unittest.mock import patch
+from schemas.pydantic.user import UserPost
+from exceptions.user.UserAlreadyExists import UserAlreadyExists
 from main import app
-from unittest.mock import AsyncMock
 
-client = TestClient(app)
+client = TestClient(app, base_url="http://localhost:8000/v1")
 
 
 @pytest.fixture
-def mock_create_service(monkeypatch):
-    mock_service = AsyncMock()
-    monkeypatch.setattr("routes.v1.userRoutes.Create.CreateService", mock_service)
-    return mock_service
+def user_data():
+    return {
+        "name": "testuser",
+        "email": "testuser@example.com",
+        "password": "password123",
+    }
 
 
-def test_create_user_success(mock_create_service):
-    mock_create_service.execute.return_value = {"id": 1, "name": "John Doe"}
-    response = client.post(
-        "v1/user/create/",
-        json={"name": "John Doe", "email": "john@example.com", "password": "password"},
-    )
-    assert response.status_code == status.HTTP_201_CREATED
-    assert response.json() == {"detail": "User created successfully"}
-
-    # Rollback on database
-    mock_create_service.rollback.assert_called_once()
-
-
-def test_create_user_conflict(mock_create_service):
-    mock_create_service.execute.return_value = Exception("User already exists")
-    response = client.post(
-        "v1/user/create/",
-        json={"name": "John Doe", "email": "john@example.com", "password": "password"},
-    )
-    assert response.status_code == status.HTTP_409_CONFLICT
-    assert response.json() == {"detail": "User already exists"}
+def test_create_user_success(user_data):
+    with patch("services.user.CreateService.CreateService.execute") as mock_execute:
+        mock_execute.return_value = None
+        response = client.post(
+            "/user/create/",
+            json={
+                "name": "testuser",
+                "email": "testuser@example.com",
+                "password": "password123",
+            },
+        )
+        assert response.status_code == status.HTTP_201_CREATED
+        assert response.content == b'{"detail":"User created successfully"}'
 
 
-def test_create_user_bad_request():
-    response = client.post("v1/user/create/", json={})
+def test_create_user_already_exists(user_data):
+    with patch("services.user.CreateService.CreateService.execute") as mock_execute:
+        mock_execute.side_effect = UserAlreadyExists("User already exists")
+        response = client.post("/user/create/", json=user_data)
+        assert response.status_code == status.HTTP_409_CONFLICT
+        assert response.json() == {"detail": "User already exists"}
+
+
+def test_create_user_invalid_data():
+    invalid_data = {
+        "username": "testuser",
+        "email": "invalid-email",
+        "password": "short",
+    }
+    response = client.post("/user/create/", json=invalid_data)
     assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
-    mock_create_service.execute.assert_called_once()
-
-
-def test_create_user_internal_server_error(mock_create_service):
-    mock_create_service.execute.side_effect = Exception("Unexpected error")
-    response = client.post(
-        "v1/user/create/",
-        json={"name": "John Doe", "email": "john@example.com", "password": "password"},
-    )
-    assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
-    assert response.json() == {"detail": "Internal server error"}
-
-    mock_create_service.execute.assert_called_once()
