@@ -12,6 +12,8 @@ class Stock(BaseModel):
     ticker = Column(String(10), nullable=False, unique=True)
     quantity = Column(Integer, nullable=False)
     mean_price = Column(Float, nullable=False)
+
+    # Stock Foreign Keys
     wallet_id = Column(Integer, ForeignKey("wallets.id"), nullable=False)
     category_id = Column(Integer, ForeignKey("categories.id"), nullable=False)
 

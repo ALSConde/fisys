@@ -1,8 +1,6 @@
 from .BaseModel import BaseModel
-from configs.Environment import get_env
-from datetime import datetime, timedelta
-from jose import jwt
 from sqlalchemy import Boolean, Column, Integer, String
+from sqlalchemy.orm import relationship
 
 
 class User(BaseModel):
@@ -14,6 +12,11 @@ class User(BaseModel):
     email = Column(String(50), nullable=False, unique=True)
     active = Column(Boolean, default=True, nullable=False)
     password = Column(String(255), nullable=False)
+
+    # User Relationships
+    expenses = relationship("Expense", back_populates="user")
+    incomes = relationship("Income", back_populates="user")
+    wallets = relationship("Wallet", back_populates="user")
 
     # User Methods
     def normalize(self) -> dict:

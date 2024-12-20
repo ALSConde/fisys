@@ -11,13 +11,14 @@ class Wallet(BaseModel):
     # Wallet Attributes
     id = Column(Integer, primary_key=True)
     name = Column(String(100), nullable=False)
+
+    # Wallet Foreign Keys
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
 
     # Wallet Relationships
     stocks = relationship(
         "Stock", back_populates="wallet", cascade="all, delete-orphan"
     )
-    incomes = relationship("Income", back_populates="wallet")
-    expenses = relationship("Expanse", back_populates="wallet")
+    user = relationship("User", back_populates="wallets")
     stock_buy_history = relationship("StockBuyHistory", back_populates="wallet")
     stock_sell_history = relationship("StockSellHistory", back_populates="wallet")

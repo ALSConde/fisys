@@ -14,7 +14,7 @@ class AlchemyUserRepo(AlchemyRepo[User], IUserRepo):
     async def create(self, user: User) -> User:
         return await super().create(user)
 
-    async def load_by(self, **kwargs) -> Optional[list[User]]:
+    async def load_by(self, **kwargs) -> User | list[User] | None:
         return await super().load_by(**kwargs)
 
     async def load_all(self) -> Sequence[User]:

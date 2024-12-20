@@ -8,11 +8,13 @@ class Income(BaseModel):
 
     # Income Attributes
     id = Column(Integer, primary_key=True)
-    wallet_id = Column(Integer, ForeignKey("wallets.id"), nullable=False)
     amount = Column(Float, nullable=False)
     date = Column(DateTime, nullable=False)
+
+    # Income Foreign Keys
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     category_id = Column(Integer, ForeignKey("categories.id"), nullable=False)
 
     # Income Relationships
-    wallet = relationship("Wallet", back_populates="incomes")
     category = relationship("Categories", back_populates="incomes")
+    user = relationship("User", back_populates="incomes")

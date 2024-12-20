@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from models.wallets.Expanse import Expanse
+from models.wallets.Expense import Expanse
 
 
 class ILoadExpanseRepo(ABC):

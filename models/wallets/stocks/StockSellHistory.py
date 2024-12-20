@@ -8,12 +8,14 @@ class StockSellHistory(BaseModel):
 
     # StockSellHistory Attributes
     id = Column(Integer, primary_key=True)
-    wallet_id = Column(Integer, ForeignKey("wallets.id"), nullable=False)
-    stock_id = Column(Integer, ForeignKey("stocks.id"), nullable=False)
     quantity = Column(Integer, nullable=False)
     price = Column(Float, nullable=False)
     tax = Column(Float, nullable=False)
     total = Column(Float, nullable=False)
+
+    # StockSellHistory Foreign Keys
+    wallet_id = Column(Integer, ForeignKey("wallets.id"), nullable=False)
+    stock_id = Column(Integer, ForeignKey("stocks.id"), nullable=False)
 
     # StockSellHistory Relationships
     wallet = relationship("Wallet", back_populates="stock_sell_history")

@@ -9,7 +9,7 @@ from models.wallets.stocks.StockBuyHistory import StockBuyHistory
 from models.wallets.stocks.StockSellHistory import StockSellHistory
 from models.wallets.stocks.Stock import Stock
 from models.wallets.Income import Income
-from models.wallets.Expanse import Expanse
+from models.wallets.Expense import Expense
 from models.wallets.Wallet import Wallet
 from models.wallets.Categories import Categories
 
