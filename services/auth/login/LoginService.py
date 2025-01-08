@@ -1,8 +1,6 @@
-from fastapi import Depends, HTTPException
+from fastapi import Depends
 from exceptions.login.LoginExceptions import InvalidCredentials
-from exceptions.user.UserNotFound import UserNotFound
 from infra.sqlalchemy.user.AlchemyUserRepo import AlchemyUserRepo
-from models.User import User
 from repos.user import IUserRepo
 from schemas.pydantic.auth import Token
 from schemas.pydantic.auth.login import LoginDTO
@@ -27,17 +25,17 @@ class LoginService(IService[LoginDTO, Token]):
             raise InvalidCredentials()
 
         user = await self.user_repo.load_active_first(email=dto.email)
-        
+
         if user is None:
             raise InvalidCredentials()
-        
+
         if user.email != dto.email:
             raise InvalidCredentials()
 
         password_verified = await self.secretService.execute(
-            dto=dto.password, verify_password=True,hashed_password=user.password
+            dto=dto.password, verify_password=True, hashed_password=user.password
         )
-        print(f"dto password: {password_verified}")
+
         if not password_verified:
             raise InvalidCredentials()
 

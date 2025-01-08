@@ -17,6 +17,7 @@ pydantic = {extras = ["email"], version = "*"}
 python-multipart = "*"
 sqlalchemy-stubs = "*"
 yfinance = "*"
+numpy-financial = "==1.0.0"
 
 [dev-packages]
 pytest = "*"

@@ -1,8 +1,9 @@
-from pydantic import ConfigDict
-from .UserPost import UserPost
+from pydantic import BaseModel, ConfigDict, EmailStr
 
 
-class User(UserPost):
+class User(BaseModel):
     id: int
+    name: str
+    email: EmailStr
 
     model_config = ConfigDict(from_attributes=True)

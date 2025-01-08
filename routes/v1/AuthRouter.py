@@ -4,13 +4,14 @@ from exceptions.login.LoginExceptions import InvalidCredentials
 from schemas.pydantic.auth import Token
 from schemas.pydantic.auth.login.LoginDTO import LoginDTO
 from services.auth.login import LoginService
+from services.contracts.Service import IService
 
 AuthRouter = APIRouter(prefix="/auth", tags=["v1", "auth"])
 
 
 @AuthRouter.post("/login")
 async def login(
-    form: OAuth2PasswordRequestForm = Depends(), loginService: LoginService = Depends()
+    form: OAuth2PasswordRequestForm = Depends(), loginService: IService = Depends(LoginService)
 ) -> Token:
     try:
         return await loginService.execute(

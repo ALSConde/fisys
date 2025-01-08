@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Depends, Response, status
-from fastapi.logger import logger
 from fastapi.responses import JSONResponse
 from exceptions.APIError import APIError
 from exceptions.user.UserAlreadyExists import UserAlreadyExists
@@ -23,5 +22,4 @@ async def create(
             status_code=status.HTTP_201_CREATED,
         )
     except APIError as e:
-        logger.error(e.message)
         raise e

@@ -22,3 +22,13 @@ class Wallet(BaseModel):
     user = relationship("User", back_populates="wallets")
     stock_buy_history = relationship("StockBuyHistory", back_populates="wallet")
     stock_sell_history = relationship("StockSellHistory", back_populates="wallet")
+
+    # Wallet Methods
+    def normalize(self) -> dict:
+        return {
+            "id": self.id,
+            "name": self.name,
+            "stocks": self.stocks,
+            "buys": self.stock_buy_history,
+            "sells": self.stock_sell_history,
+        }

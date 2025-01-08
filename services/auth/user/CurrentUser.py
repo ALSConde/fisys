@@ -29,7 +29,7 @@ async def get_current_user(
     except JWTError:
         raise credentials_exception
 
-    user = await user_repo.load_active_first(email=email)
+    user = await user_repo.load_active_first(email=token_data.username)
     if user is None:
         raise credentials_exception
     return user

@@ -1,6 +1,6 @@
+from configs.Log import logger
 from typing import Annotated
 from fastapi import APIRouter, Depends, Response, status
-from fastapi.logger import logger
 from fastapi.responses import JSONResponse
 from exceptions import APIError
 from models.User import User
@@ -19,7 +19,6 @@ async def create(
     createService: IService = Depends(CreateService),
 ) -> Response:
     try:
-
         await createService.execute(walletData, user=current_user)
 
         return JSONResponse(
@@ -27,5 +26,5 @@ async def create(
             status_code=status.HTTP_201_CREATED,
         )
     except APIError as e:
-        logger.error(e.message)
+        logger.info(e.message)
         raise e

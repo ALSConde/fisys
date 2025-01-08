@@ -42,5 +42,5 @@ class CreateService(IService[UserPost, User]):
                 raise UserAlreadyExists()
         except UserAlreadyExists as e:
             raise e
-        except APIError as e:
+        except APIError:
             raise APIError(500, "Unexpected error")
