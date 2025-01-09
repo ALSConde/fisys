@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, Response, status
 from fastapi.responses import JSONResponse
 from exceptions.APIError import APIError
+from configs import logger
 from exceptions.user.UserAlreadyExists import UserAlreadyExists
 from schemas.pydantic.user import UserPost
 from services.contracts.Service import IService
@@ -22,4 +23,5 @@ async def create(
             status_code=status.HTTP_201_CREATED,
         )
     except APIError as e:
+        logger.info(e.message)
         raise e
